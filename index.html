@@ -15,25 +15,81 @@
     <h2>Map of where folks are</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-      var place = [-13432088.06, 4205407.06]
-      var point = new ol.geom.Point(place)
+      var places = [[-13431765.23, 4202379.26], 3, [-13412106.21, 4481313.70], 2, [-13585018.77, 4490638.18], 1, [-13568320.85, 4486352.93], 1, [-13576792.26, 4472025.43], 1]
+      var orangeFeatures = []
+      var yellowFeatures = []
+      var purpleFeatures = []
+      for(i=0; i<10; i+=2){
+        if(places[i+1] == 1){
+          console.log("yellow");
+          yellowFeatures.push(new ol.Feature({
+            geometry: new ol.geom.Point(places[i])
+          }));
+        }
+        else if(places[i+1] == 2){
+          console.log("orange");
+          orangeFeatures.push(new ol.Feature({
+            geometry: new ol.geom.Point(places[i])
+          }));
+        }
+        else{
+          console.log("purple");
+          purpleFeatures.push(new ol.Feature({
+            geometry: new ol.geom.Point(places[i])
+          }));
+        }
+      }
+      var yellowVectorLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: yellowFeatures,
+        }),
+        style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 3,
+            fill: new ol.style.Fill({color: 'yellow'}),
+            stroke: new ol.style.Stroke({
+              color: 'black', 
+              width: 1})
+          })
+        })
+      });
+      var orangeVectorLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: orangeFeatures,
+        }),
+        style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({color: 'orange'}),
+            stroke: new ol.style.Stroke({
+              color: 'black', 
+              width: 1})
+          })
+        })
+      });
+      var purpleVectorLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: purpleFeatures,
+        }),
+        style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 9,
+            fill: new ol.style.Fill({color: 'purple'}),
+            stroke: new ol.style.Stroke({
+              color: 'black', 
+              width: 1})
+          })
+        })
+      });
       var map = new ol.Map({
         target: 'map',
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM()
           }),
-          new ol.layer.Vector({
-            source: new ol.source.Vector(({
-              features: [new ol.Feature(point)],
-            })),
-            style: new ol.style.Style({
-              image: new ol.style.Circle({
-                radius: 9,
-                fill: new ol.style.Fill({color: 'red'}),
-              })
-            })
-          })
+          yellowVectorLayer,
+          purpleVectorLayer,
+          orangeVectorLayer
         ],
         view: new ol.View({
           center: ol.proj.fromLonLat([-120.6625, 35.3050]),
