@@ -21,13 +21,11 @@
       var purpleFeatures = []
       for(i=0; i<10; i+=2){
         if(places[i+1] == 1){
-          console.log("yellow");
           yellowFeatures.push(new ol.Feature({
             geometry: new ol.geom.Point(places[i])
           }));
         }
         else if(places[i+1] == 2){
-          console.log("orange");
           orangeFeatures.push(new ol.Feature({
             geometry: new ol.geom.Point(places[i])
           }));
